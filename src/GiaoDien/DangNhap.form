@@ -98,7 +98,7 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
-        <Property name="horizontalAlignment" type="int" value="0" postCode="javax.swing.ImageIcon originalIcon  = new javax.swing.ImageIcon(getClass().getResource(&quot;/hocswing_b1/ImageIcon/logo.jpg&quot;));&#xa; Image originalImage = originalIcon.getImage();&#xa;Image resizedImage = originalImage.getScaledInstance(90, 90, Image.SCALE_SMOOTH);&#xa;ImageIcon resizedIcon = new ImageIcon(resizedImage);"/>
+        <Property name="horizontalAlignment" type="int" value="0" postCode="javax.swing.ImageIcon originalIcon  = new javax.swing.ImageIcon(getClass().getResource(&quot;/HinhAnh/logoHaui.jpg&quot;));&#xa; Image originalImage = originalIcon.getImage();&#xa;Image resizedImage = originalImage.getScaledInstance(90, 90, Image.SCALE_SMOOTH);&#xa;ImageIcon resizedIcon = new ImageIcon(resizedImage);"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="resizedIcon " type="code"/>
         </Property>

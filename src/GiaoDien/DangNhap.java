@@ -52,7 +52,7 @@ public class DangNhap extends javax.swing.JFrame {
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        javax.swing.ImageIcon originalIcon  = new javax.swing.ImageIcon(getClass().getResource("/hocswing_b1/ImageIcon/logo.jpg"));
+        javax.swing.ImageIcon originalIcon  = new javax.swing.ImageIcon(getClass().getResource("/HinhAnh/logoHaui.jpg"));
         Image originalImage = originalIcon.getImage();
         Image resizedImage = originalImage.getScaledInstance(90, 90, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
