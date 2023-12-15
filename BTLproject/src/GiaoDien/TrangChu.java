@@ -113,6 +113,8 @@ public class TrangChu extends javax.swing.JFrame {
         jLabel7.setText("DANH SÁCH LỚP HỌC");
         jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setText("Mã lớp:");
 
         jLabel2.setText("Tên lớp");
@@ -182,6 +184,8 @@ public class TrangChu extends javax.swing.JFrame {
                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         btnThem.setBackground(new java.awt.Color(0, 153, 51));
         btnThem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

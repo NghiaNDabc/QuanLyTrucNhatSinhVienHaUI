@@ -1,3 +1,7 @@
+
+import java.awt.Color;
+import javax.swing.JFrame;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/Application.java to edit this template
@@ -77,7 +81,7 @@ public class Them_Sua_ChiTiet extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnTrangChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LaBel_QLTN, javax.swing.GroupLayout.DEFAULT_SIZE, 709, Short.MAX_VALUE))
+                .addComponent(LaBel_QLTN, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,6 +194,8 @@ public class Them_Sua_ChiTiet extends javax.swing.JFrame {
         tableChiTiet.setSelectionBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(tableChiTiet);
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         btnThem.setBackground(new java.awt.Color(0, 102, 0));
         btnThem.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThem.setForeground(new java.awt.Color(255, 255, 255));
@@ -271,9 +277,9 @@ public class Them_Sua_ChiTiet extends javax.swing.JFrame {
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(0, 555, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addContainerGap()
                         .addComponent(jScrollPane1)))
                 .addContainerGap())
         );
@@ -358,7 +364,9 @@ public class Them_Sua_ChiTiet extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Them_Sua_ChiTiet().setVisible(true);
+                JFrame setChiTiet = new Them_Sua_ChiTiet();
+                setChiTiet.setVisible(true);
+                setChiTiet.getContentPane().setBackground(Color.white);
             }
         });
     }

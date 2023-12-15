@@ -79,6 +79,8 @@ public class DangNhap extends javax.swing.JFrame {
         logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/HinhAnh/logo-haui.png"))); // NOI18N
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         txtTenDN.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtTenDN.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtTenDN.addActionListener(new java.awt.event.ActionListener() {
