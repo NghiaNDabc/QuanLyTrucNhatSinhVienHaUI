@@ -4,13 +4,23 @@
  */
 package DuLieuHeThong;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class SinhVien {
 
     private String maSV;
     private String hoTen;
-    private String maLop;
+    private ArrayList<String> listMaLop ;
     public void setMaSV(String maSV) {
         this.maSV = maSV;
+    }
+    public SinhVien() {
+    }
+    public SinhVien(String maSV, String hoTen, ArrayList<String> listMaLop) {
+        this.maSV = maSV;
+        this.hoTen = hoTen;
+        this.listMaLop = listMaLop;
     }
 
     public void setHoTen(String hoTen) {
@@ -20,17 +30,48 @@ public class SinhVien {
     public String getHoTen() {
         return hoTen;
     }
-
+    
     public String getMaSV() {
         return maSV;
     }
 
-    public SinhVien() {
+    public ArrayList<String> getListMaLop() {
+        return listMaLop;
+    }
+
+    
+
+    public void setListMaLop(ArrayList<String> listMaLop) {
+        this.listMaLop = listMaLop;
     }
 
     public SinhVien(String maSV, String hoTen) {
         this.maSV = maSV;
         this.hoTen = hoTen;
+    }
+    public void addMaLop(String maLop) {
+        listMaLop.add(maLop);
+    }
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.maSV);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SinhVien other = (SinhVien) obj;
+        return Objects.equals(this.maSV, other.maSV);
     }
 
 }

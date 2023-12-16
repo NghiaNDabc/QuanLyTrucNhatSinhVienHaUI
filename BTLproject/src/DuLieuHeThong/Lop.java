@@ -7,6 +7,7 @@ package DuLieuHeThong;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class Lop {
 
@@ -15,7 +16,7 @@ public class Lop {
     private Date ngayBD;
     private Date ngayKT;
     private int soBuoiHoc;
-    private ArrayList<SinhVien> listSV= new ArrayList<>();
+    private ArrayList<SinhVien> listSV;
 
     public void setMaLop(String maLop) {
         this.maLop = maLop;
@@ -57,15 +58,52 @@ public class Lop {
         return soBuoiHoc;
     }
 
+    public void setListSV(ArrayList<SinhVien> listSV) {
+        this.listSV = listSV;
+    }
+
+    public ArrayList<SinhVien> getListSV() {
+        return listSV;
+    }
+
     public Lop() {
     }
 
-    public Lop(String maLop, String tenLop, Date ngayBD, Date ngayKT, int soBuoiHoc) {
+    public Lop(String maLop) {
+        this.maLop = maLop;
+    }
+
+
+    public Lop(String maLop, String tenLop, Date ngayBD, Date ngayKT, int soBuoiHoc, ArrayList<SinhVien> listSV) {
         this.maLop = maLop;
         this.tenLop = tenLop;
         this.ngayBD = ngayBD;
         this.ngayKT = ngayKT;
         this.soBuoiHoc = soBuoiHoc;
+        this.listSV = listSV;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 31 * hash + Objects.hashCode(this.maLop);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Lop other = (Lop) obj;
+        return Objects.equals(this.maLop, other.maLop);
+    }
+    
 
 }
