@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GiaoDien;
-
+import javax.swing.table.DefaultTableModel;
 import DuLieuHeThong.Lop;
 import DuLieuHeThong.SinhVien;
 import Source.ChiTiet.TableTrangChu;
@@ -24,7 +24,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,7 +41,10 @@ import static org.apache.poi.ss.usermodel.CellType.BLANK;
 import static org.apache.poi.ss.usermodel.CellType.BOOLEAN;
 import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
 import static org.apache.poi.ss.usermodel.CellType.STRING;
-
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 /**
  *
  * @author HP
@@ -50,8 +57,9 @@ public class TrangChu extends javax.swing.JFrame {
     public TrangChu() {
         initComponents();
         fakeData();
+        myInit();
     }
-   ArrayList<SinhVien> listTatCaSinhVien = new ArrayList<>();
+    ArrayList<SinhVien> listTatCaSinhVien = new ArrayList<>();
     ArrayList<Lop> listLop = new ArrayList<>();
 //    public TrangChu(JLabel LaBel_QLTN, JButton btnChonFile, JButton btnDangXuat, JButton btnSapXep, JButton btnSua, JButton btnThem, JButton btnTimKiem, JButton btnTrangChu, JButton btnXoa, JLabel jLabel1, JLabel jLabel2, JLabel jLabel3, JLabel jLabel4, JLabel jLabel5, JLabel jLabel6, JLabel jLabel7, JLabel jLabel8, JPanel jPanel1, JPanel jPanel3, JPanel jPanel4, JPanel jPanel7, JScrollPane jScrollPane1, JTable tblLopTrucNhat, JTextField txtChonFile, JTextField txtMaLop, JTextField txtMaLop1, JTextField txtMaLop2, JTextField txtMaLop3, JTextField txtMaLop4, JTextField txtMaLop5) throws HeadlessException {
 //        this.LaBel_QLTN = LaBel_QLTN;
@@ -85,6 +93,7 @@ public class TrangChu extends javax.swing.JFrame {
 //        this.txtMaLop4 = txtMaLop4;
 //        this.txtMaLop5 = txtMaLop5;
 //    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -117,13 +126,15 @@ public class TrangChu extends javax.swing.JFrame {
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnSapXep = new javax.swing.JButton();
+        cbLoaiSapXep = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblLopTrucNhat = new javax.swing.JTable();
-        txtMaLop5 = new javax.swing.JTextField();
+        txtTimKiem = new javax.swing.JTextField();
         btnTimKiem = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
-        btnDangXuat = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        Reload = new javax.swing.JButton();
+        btnDangXuat = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Trang Chủ");
@@ -132,7 +143,11 @@ public class TrangChu extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(0, 102, 51));
 
         btnTrangChu.setBackground(new java.awt.Color(0, 102, 51));
-        btnTrangChu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/HinhAnh/logo-haui.png"))); // NOI18N
+        javax.swing.ImageIcon originalIcon  = new javax.swing.ImageIcon(getClass().getResource("/HinhAnh/logo-haui.png"));
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+        btnTrangChu.setIcon(resizedIcon);
         btnTrangChu.setBorder(null);
         btnTrangChu.setFocusable(false);
         btnTrangChu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -162,17 +177,19 @@ public class TrangChu extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnTrangChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(LaBel_QLTN, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
+                .addComponent(btnTrangChu, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(LaBel_QLTN, javax.swing.GroupLayout.DEFAULT_SIZE, 751, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnTrangChu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(LaBel_QLTN, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LaBel_QLTN, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTrangChu, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
         );
 
         jLabel7.setBackground(new java.awt.Color(255, 255, 255));
@@ -310,6 +327,8 @@ public class TrangChu extends javax.swing.JFrame {
             }
         });
 
+        cbLoaiSapXep.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã lớp", "Tên Lớp", "Ngày bắt đầu", "Ngày kết thúc", "Số buổi học", "Số lượng sinh viên" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -323,6 +342,8 @@ public class TrangChu extends javax.swing.JFrame {
                 .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSapXep, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbLoaiSapXep, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -333,8 +354,9 @@ public class TrangChu extends javax.swing.JFrame {
                     .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSapXep, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addComponent(btnSapXep, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbLoaiSapXep, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tblLopTrucNhat.setModel(new javax.swing.table.DefaultTableModel(
@@ -350,14 +372,46 @@ public class TrangChu extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblLopTrucNhat);
 
-        txtMaLop5.setText("Nhập lớp ...");
-
         btnTimKiem.setBackground(new java.awt.Color(255, 204, 0));
         btnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("THÔNG TIN LỚP HỌC");
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+                .addGap(116, 116, 116))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3))
+        );
+
+        Reload.setText("Reload");
+        Reload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReloadActionPerformed(evt);
+            }
+        });
 
         btnDangXuat.setBackground(new java.awt.Color(0, 153, 255));
         btnDangXuat.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -370,79 +424,61 @@ public class TrangChu extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("THÔNG TIN LỚP HỌC");
-        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnDangXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addComponent(btnDangXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnDangXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtMaLop5, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnTimKiem)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnTimKiem)))
-                .addContainerGap())
+                        .addComponent(Reload)
+                        .addGap(36, 36, 36))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDangXuat, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(Reload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtMaLop5)
-                    .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
- 
 
     public void loadTableTrangChu() {
         tblLopTrucNhat.setModel(new TableTrangChu(listLop));
@@ -484,23 +520,19 @@ public class TrangChu extends javax.swing.JFrame {
         }
     }
 
-    boolean check() {
+    String ThongBao() {
         String maLop = txtMaLop.getText();
         String tenLop = txtTenLop.getText();
         String ngayBD = txtNgayBatDau.getText();
         String soBuoiHoc = txtSoBuoiHoc.getText();
         String ngayKT = txtNgayKetThuc.getText();
-        String filePath = txtChonFile.getText();
+
         String thongBao = "";
-        if (filePath.equals("")) {
-            thongBao += "Chưa chọn file danh sách lớp!\n";
-        }
+
         if (maLop.equals("")) {
             thongBao += "Chưa điền mã lớp!\n";
         }
-        else if(listLop.contains(new Lop(maLop))){
-            thongBao += "Mã lớp đã tồn tại!\n";
-        }
+
         if (tenLop.equals("")) {
             thongBao += "Chưa điền tên lớp!\n";
         }
@@ -540,6 +572,28 @@ public class TrangChu extends javax.swing.JFrame {
             } catch (NumberFormatException e) {
                 thongBao += "Số buổi học phải là số nguyên!\n";
             }
+        }
+        return thongBao;
+    }
+
+    boolean checkSua() {
+        String thongBao = ThongBao();
+        if (thongBao.equals("") == false) {
+            JOptionPane.showMessageDialog(TrangChu.this, thongBao, "Thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    boolean checkThem() {
+        String thongBao = ThongBao();
+        String maLop = txtMaLop.getText();
+        if (listLop.contains(new Lop(maLop))) {
+            thongBao += "Mã lớp đã tồn tại!\n";
+        }
+        String filePath = txtChonFile.getText();
+        if (filePath.equals("")) {
+            thongBao += "Chưa chọn file danh sách lớp!\n";
         }
         if (thongBao.equals("") == false) {
             JOptionPane.showMessageDialog(TrangChu.this, thongBao, "Thông báo", JOptionPane.ERROR_MESSAGE);
@@ -586,8 +640,8 @@ public class TrangChu extends javax.swing.JFrame {
             }
 
         } catch (IOException e) {
-               JOptionPane.showMessageDialog(TrangChu.this, "Kiểm tra lại đường dẫn file!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-               return false;
+            JOptionPane.showMessageDialog(TrangChu.this, "Kiểm tra lại đường dẫn file!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         return true;
     }
@@ -625,8 +679,8 @@ public class TrangChu extends javax.swing.JFrame {
             Date ngayBatDau3 = sdf.parse("1-8-20121");
             Date ngayKetThuc3 = sdf.parse("1-10-2021");
             Lop newLop3 = new Lop("IT003", "Đồ họa máy tính", ngayBatDau3, ngayKetThuc3, 12, listSvCuaLop3);
-            Lop newLop = new Lop("IT001", "Lâp Trình Java", ngayBatDau1, ngayKetThuc1, 10, listSvCuaLop1);
-            Lop newLop2 = new Lop("IT002", "Lâp Trình .Net", ngayBatDau2, ngayKetThuc2, 9, listSvCuaLop2);
+            Lop newLop = new Lop("IT001", "Lập Trình Java", ngayBatDau1, ngayKetThuc1, 10, listSvCuaLop1);
+            Lop newLop2 = new Lop("IT002", "Lập Trình .Net", ngayBatDau2, ngayKetThuc2, 9, listSvCuaLop2);
             listLop.add(newLop);
             listLop.add(newLop2);
             listLop.add(newLop3);
@@ -636,6 +690,21 @@ public class TrangChu extends javax.swing.JFrame {
         }
         loadTableTrangChu();
     }
+
+    private void updateTextFields(int selectedRow) {
+        txtMaLop.setText(tblLopTrucNhat.getValueAt(selectedRow, 0).toString());
+        txtTenLop.setText(tblLopTrucNhat.getValueAt(selectedRow, 1).toString());
+        Date ngayBD = (Date) tblLopTrucNhat.getValueAt(selectedRow, 2);
+        Date ngayKT = (Date) tblLopTrucNhat.getValueAt(selectedRow, 3);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        txtNgayBatDau.setText(dateFormat.format(ngayBD));
+        txtNgayKetThuc.setText(dateFormat.format(ngayKT));
+
+        txtSoBuoiHoc.setText(tblLopTrucNhat.getValueAt(selectedRow, 4).toString());
+        //txtSoBuoiHoc.setText(tblLopTrucNhat.getValueAt(selectedRow, 5).toString());
+    }
+
     private void btnTrangChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrangChuActionPerformed
         // TODO add your handling code here:
         System.out.println("dfdsf");
@@ -643,14 +712,15 @@ public class TrangChu extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        if (check()) {
+        if (checkThem()) {
             String maLop = txtMaLop.getText();
             String tenLop = txtTenLop.getText();
             String ngayBD = txtNgayBatDau.getText();
             int soBuoiHoc = Integer.parseInt(txtSoBuoiHoc.getText());
             String ngayKT = txtNgayKetThuc.getText();
-            if(readExcelFile(txtChonFile.getText(), 0, maLop) == false)
+            if (readExcelFile(txtChonFile.getText(), 0, maLop) == false) {
                 return;
+            }
 
             ArrayList<SinhVien> listSvCuaLop = new ArrayList<>();
             for (SinhVien sv : listTatCaSinhVien) {
@@ -674,17 +744,213 @@ public class TrangChu extends javax.swing.JFrame {
             loadTableTrangChu();
         }
     }//GEN-LAST:event_btnThemActionPerformed
+    Date convertStringToDate(String input) {
+        Date output = null;
+        try {
+            // Tạo đối tượng SimpleDateFormat với định dạng ngày tháng mong muốn
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+            // Chuyển đổi chuỗi thành đối tượng Date
+            output = sdf.parse(input);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnSuaActionPerformed
 
+        if (tblLopTrucNhat.getSelectedRow() != -1 && checkSua() == true) {
+            String seletecdMaLop = tblLopTrucNhat.getValueAt(tblLopTrucNhat.getSelectedRow(), 0).toString();
+            Lop suaLop = new Lop();
+            for (Lop lop : listLop) {
+                if (lop.getMaLop().equals(seletecdMaLop)) {
+                    suaLop = lop;
+                    break;
+                }
+            }
+            String newMaLop = txtMaLop.getText();
+            Lop check = new Lop(newMaLop);
+            if(listLop.contains(check) && newMaLop.equals(seletecdMaLop)==false){
+                JOptionPane.showMessageDialog(TrangChu.this, "Mã lớp đã tồn tại!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                 return;
+            }
+            suaLop.setMaLop(newMaLop);
+            suaLop.setTenLop(txtTenLop.getText());
+
+            suaLop.setNgayBD(convertStringToDate(txtNgayBatDau.getText()));
+            suaLop.setNgayKT(convertStringToDate(txtNgayKetThuc.getText()));
+            suaLop.setSoBuoiHoc(Integer.parseInt(txtSoBuoiHoc.getText()));
+            //System.out.println(listTatCaSinhVien.size());
+            // sửa lại mã lớp của tất cả sinh viên trong lớp đó
+            if (newMaLop.equals(seletecdMaLop) == false) {
+                for (SinhVien sv : suaLop.getListSV()) {
+                    sv.getListMaLop().add(newMaLop);
+                    sv.getListMaLop().remove(seletecdMaLop);
+                }
+            }
+            //for(int i = 0; i < listTatCaSinhVien.size(); i++)
+            //System.out.println(i+ " :" +listTatCaSinhVien.get(i).getListMaLop().size());
+            // nếu text chứa link file excel ko null, xóa sinh viên trong listTatCaLop có mã của mã lớp mới bị xóa, nếu sinh viên đấy chỉ học 1 lớp bị sửa
+            //                          nếu sinh viên học 2 lớp trở lên thì xóa mã lớp của lớp bị sửa trong listMaLop của sinh viên đó
+            if (txtChonFile.getText().isEmpty() == false) {
+                    try {
+                        FileInputStream fileInputStream = new FileInputStream(txtChonFile.getText());
+                    Workbook workbook = new XSSFWorkbook(fileInputStream);}
+                    catch(IOException ex){
+                        JOptionPane.showMessageDialog(TrangChu.this, "Xem lại đường dẫn file!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    
+                //
+//                Iterator<SinhVien> iterator = listTatCaSinhVien.iterator();
+//                while (iterator.hasNext()) {
+//                    SinhVien sv = iterator.next();
+//                    List<String> listMaLopSV = sv.getListMaLop();
+//
+//                    if (listMaLopSV != null && listMaLopSV.contains(newMaLop)) {
+//                        if (listMaLopSV.size() == 1) {
+//                            iterator.remove(); // Sử dụng Iterator để xóa phần tử mà không gây lỗi
+//
+//                        } else {
+//                            listMaLopSV.remove(newMaLop);
+//                        }
+//                    }
+//                }
+                xoaSVTheoMa(newMaLop);
+                //
+                readExcelFile(txtChonFile.getText(), 0, newMaLop);
+                System.out.println(newMaLop);
+                suaLop.getListSV().clear();
+
+                for (SinhVien sv : listTatCaSinhVien) {
+                    if (sv.getListMaLop().contains(newMaLop)) {
+                        suaLop.getListSV().add(sv);
+                    }
+                }
+
+            }
+            loadTableTrangChu();
+        } else {
+            JOptionPane.showMessageDialog(TrangChu.this, "Vui lòng chọn dòng mà bạn muốn sửa!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_btnSuaActionPerformed
+void xoaSVTheoMa(String maLop){
+    Iterator<SinhVien> iterator = listTatCaSinhVien.iterator();
+                while (iterator.hasNext()) {
+                    SinhVien sv = iterator.next();
+                    List<String> listMaLopSV = sv.getListMaLop();
+
+                    if (listMaLopSV != null && listMaLopSV.contains(maLop)) {
+                        if (listMaLopSV.size() == 1) {
+                            iterator.remove(); // Sử dụng Iterator để xóa phần tử mà không gây lỗi
+
+                        } else {
+                            listMaLopSV.remove(maLop);
+                        }
+                    }
+                }
+}
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         // TODO add your handling code here:
+        //    int check = JOptionPane.showConfirmDialog(QLHT.this, "Bạn có chắc muốn xóa", "Thông báo", JOptionPane.OK_CANCEL_OPTION);
+//                if (check == JOptionPane.YES_OPTION) {
+//                    infor.remove(dongChon);
+//                    writeList();
+//                    readList();
+//                    loadTable();
+        if (tblLopTrucNhat.getSelectedRow() != -1) {
+            int check = JOptionPane.showConfirmDialog(TrangChu.this, "Bạn có chắc muốn xóa", "Thông báo", JOptionPane.OK_CANCEL_OPTION);
+            if (check == JOptionPane.YES_OPTION) {
+                String selectedMaLop = tblLopTrucNhat.getValueAt(tblLopTrucNhat.getSelectedRow(), 0).toString();
+                Iterator it = listLop.iterator();
+                while (it.hasNext()) {
+                    Lop lop = (Lop) it.next();
+                    if (lop.getMaLop().equals(selectedMaLop)) {
+                        it.remove();
+                        break;
+                    }
+                }
+                xoaSVTheoMa(selectedMaLop);
+                loadTableTrangChu();
+            }
+        } else
+            JOptionPane.showMessageDialog(TrangChu.this, "Vui lòng chọn hàng muốn xóa!", "Thông báo", JOptionPane.OK_CANCEL_OPTION);
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSapXepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSapXepActionPerformed
         // TODO add your handling code here:
+        int selected = cbLoaiSapXep.getSelectedIndex();
+        switch (selected) {
+            case 0:
+                Comparator<Lop> c0 = new Comparator<Lop>() {
+                    @Override
+                    public int compare(Lop t, Lop t1) {
+                        return t.getMaLop().compareToIgnoreCase(t1.getMaLop());
+                    }
+                };
+                Collections.sort(listLop, c0);
+                loadTableTrangChu();
+
+                break;
+            case 1:
+                Comparator<Lop> c1 = new Comparator<Lop>() {
+                    @Override
+                    public int compare(Lop t, Lop t1) {
+                        return t.getTenLop().compareToIgnoreCase(t1.getTenLop());
+                    }
+                };
+                Collections.sort(listLop, c1);
+                loadTableTrangChu();
+
+                break;
+            case 2:
+                Comparator<Lop> c2 = new Comparator<Lop>() {
+                    @Override
+                    public int compare(Lop t, Lop t1) {
+                        return t.getNgayBD().toString().compareToIgnoreCase(t1.getNgayBD().toString());
+                    }
+                };
+                Collections.sort(listLop, c2);
+                loadTableTrangChu();
+            case 3:
+                Comparator<Lop> c3 = new Comparator<Lop>() {
+                    @Override
+                    public int compare(Lop t, Lop t1) {
+                        return t.getNgayKT().compareTo(t1.getNgayKT());
+                    }
+                };
+                Collections.sort(listLop, c3);
+                loadTableTrangChu();
+
+                break;
+
+            case 4:
+                Comparator<Lop> c5 = new Comparator<Lop>() {
+                    @Override
+                    public int compare(Lop t, Lop t1) {
+                        return Integer.compare(t.getSoBuoiHoc(), t1.getSoBuoiHoc());
+                    }
+                };
+                Collections.sort(listLop, c5);
+                loadTableTrangChu();
+                break;
+            case 5:
+                Comparator<Lop> c4 = new Comparator<Lop>() {
+                    @Override
+                    public int compare(Lop t, Lop t1) {
+                        return Integer.compare(t.getListSV().size(), t1.getListSV().size());
+                    }
+                };
+                Collections.sort(listLop, c4);
+                loadTableTrangChu();
+                break;
+            default:
+                throw new AssertionError();
+        }
     }//GEN-LAST:event_btnSapXepActionPerformed
 
     private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
@@ -696,6 +962,61 @@ public class TrangChu extends javax.swing.JFrame {
         openFileChooser();
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        String TimKiem = txtTimKiem.getText().toString().toLowerCase();
+        if (TimKiem.isEmpty() == false) {
+            String regex = ".*" + Pattern.quote(TimKiem) + ".*";
+            ArrayList<Lop> searchedLop = new ArrayList<>();
+            for (Lop lop : listLop) {
+                if(lop.getMaLop().toLowerCase().equals(TimKiem))
+                        searchedLop.add(lop);
+              
+//                String malop = lop.getMaLop().toLowerCase();
+//                    if(malop.length()>= TimKiem.length()){
+//                        for(int i = 0; i <= TimKiem.length()- malop.length();i++){
+//                           if(malop) 
+//                        }
+//                    }
+                
+//                if(malop.equals(TimKiem))
+//                    searchedLop.add(lop);
+//                if (lop.getTenLop().matches(regex)) 
+//                searchedLop.add(lop);
+//                if(lop.getMaLop().contains(regex));
+//                    searchedLop.add(lop);
+            }
+            
+            if (searchedLop.size()==0) {
+                for (Lop lop : listLop) {
+                    if(lop.getTenLop().toLowerCase().equals(TimKiem))
+                        searchedLop.add(lop);
+                }
+            }
+            DefaultTableModel newModel = new DefaultTableModel();
+            tblLopTrucNhat.setModel(newModel);
+            tblLopTrucNhat.setModel(new TableTrangChu(searchedLop));
+        }
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void ReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReloadActionPerformed
+        // TODO add your handling code here:
+            DefaultTableModel newModel = new DefaultTableModel();
+                tblLopTrucNhat.setModel(newModel);
+                loadTableTrangChu();
+    }//GEN-LAST:event_ReloadActionPerformed
+    void myInit() {
+        tblLopTrucNhat.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting() && tblLopTrucNhat.getSelectedRow() != -1) {
+                    int selectedRow = tblLopTrucNhat.getSelectedRow();
+                    updateTextFields(selectedRow);
+                }
+            }
+        });
+    }
 
     /**
      * @param args the command line arguments
@@ -729,6 +1050,7 @@ public class TrangChu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame trangChu = new TrangChu();
+
                 trangChu.setVisible(true);
                 trangChu.getContentPane().setBackground(Color.white);
             }
@@ -737,6 +1059,7 @@ public class TrangChu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LaBel_QLTN;
+    private javax.swing.JButton Reload;
     private javax.swing.JButton btnDangXuat;
     private javax.swing.JButton btnSapXep;
     private javax.swing.JButton btnSua;
@@ -744,6 +1067,7 @@ public class TrangChu extends javax.swing.JFrame {
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnTrangChu;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JComboBox<String> cbLoaiSapXep;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -761,11 +1085,11 @@ public class TrangChu extends javax.swing.JFrame {
     private javax.swing.JTable tblLopTrucNhat;
     private javax.swing.JTextField txtChonFile;
     private javax.swing.JTextField txtMaLop;
-    private javax.swing.JTextField txtMaLop5;
     private javax.swing.JTextField txtNgayBatDau;
     private javax.swing.JTextField txtNgayKetThuc;
     private javax.swing.JTextField txtSoBuoiHoc;
     private javax.swing.JTextField txtTenLop;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 
 }
