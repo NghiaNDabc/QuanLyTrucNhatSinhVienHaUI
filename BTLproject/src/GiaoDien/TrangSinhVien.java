@@ -4,6 +4,7 @@
  */
 package GiaoDien;
 
+import hocswing_b1.DangNhap;
 import java.awt.Color;
 import javax.swing.JFrame;
 
@@ -129,9 +130,24 @@ public class TrangSinhVien extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Lớp trực nhật", "Ngày trực nhật", "Lưu ý", "Sinh viên trực nhật"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -168,7 +184,8 @@ public class TrangSinhVien extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTrangChuActionPerformed
 
     private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
-        // TODO add your handling code here:
+        DangNhap a = new DangNhap();
+        a.setVisible(true);
     }//GEN-LAST:event_btnDangXuatActionPerformed
 
     /**

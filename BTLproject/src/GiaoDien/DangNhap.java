@@ -4,10 +4,15 @@
  */
 package hocswing_b1;
 
+import DuLieuHeThong.Account;
+import GiaoDien.TrangChu;
+import GiaoDien.TrangSinhVien;
 import java.awt.Color;
+import java.awt.Component;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 
@@ -172,11 +177,15 @@ public class DangNhap extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-HashMap<String, String> accountAdm = new HashMap<>();
+ArrayList<Account> list = new ArrayList<Account>();
+                          
 
-private void fakeAccount(){
-    accountAdm.put("administrator", "123@abc");
-}
+    private void fakeAccount(){
+        Account a1 = new Account("admin", "123");
+        Account a2 = new Account("cuong", "123");
+        list.add(a1);        list.add(a2);
+
+    }
     private void txtMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatKhauActionPerformed
         // TODO add your handling code here:
         
@@ -189,14 +198,28 @@ private void fakeAccount(){
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         
-                String taiKhoan = txtTenDN.getText();
-        char[] matKhauChars = txtMatKhau.getPassword();
-        String matKhau = new String(matKhauChars);
-//        if(accountAdm.containsKey(taiKhoan) && accountAdm.get(taiKhoan).equals(matKhau)== true)
-//           // new hoc().setVisible(true);
-//        else {
-//           JOptionPane.showMessageDialog(DangNhap.this, "Thông tin tài khoản hoặc mật khẩu không chính xác! ", "Thông báo", JOptionPane.ERROR_MESSAGE);
-//        }
+                // lấy dữ liệu text field tên đăng nhập
+         String tenDN = txtTenDN.getText();
+         // lấy dữ liệu text field mật khẩu
+         String matKhau = new String(txtMatKhau.getPassword());
+         int i = 0;
+        for (Account account : list) {
+            if(account.getPassword().equals(matKhau) && account.getUsername().equals(tenDN)){
+                if(account.getPassword().equals("123") && account.getUsername().equals("admin")){
+                    i++;
+                    TrangChu a = new TrangChu();
+                    a.setVisible(true);
+                     ((Component) evt.getSource()).setVisible(false);
+                }
+                else {
+                    TrangSinhVien b = new TrangSinhVien();
+                    b.setVisible(true);
+                     ((Component) evt.getSource()).setVisible(false);
+                    i++;
+                }
+            }
+        }
+        if(i == 0) JOptionPane.showMessageDialog(null, "Tài khoản hoặc mật khẩu không chính xác");
     }//GEN-LAST:event_btnDangNhapActionPerformed
 private void myInit(){
 //    ImageIcon logo = new ImageIcon(getClass().getResource("/hocswing_b1/ImageIcon/logo.jpg"));
