@@ -4,18 +4,18 @@
  */
 package DuLieuHeThong;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class TrucNhat {
-    private Lop lopTN;
+    
     private Date ngayTN;
     private String luuY;
+    private int Buoi;
     private ArrayList<SinhVien> listSV = new ArrayList<SinhVien>();
 
-    public void setLopTN(Lop lopTN) {
-        this.lopTN = lopTN;
-    }
+
 
     public void setListSV(ArrayList<SinhVien> listSV) {
         this.listSV = listSV;
@@ -28,13 +28,27 @@ public class TrucNhat {
     public void setLuuY(String luuY) {
         this.luuY = luuY;
     }
-
-    public Lop getLopTN() {
-        return lopTN;
+      public void setBuoi(int buoi) {
+        this.Buoi = buoi;
     }
+
+
 
     public Date getNgayTN() {
         return ngayTN;
+    }
+    public String display(Date ngay){
+    
+
+        // Định dạng của chuỗi ngày đầu ra
+        SimpleDateFormat sdfOutput = new SimpleDateFormat("dd/MM/yyyy");
+
+        // Chuyển đổi chuỗi ngày sang đối tượng Date
+        
+        
+        // Chuyển đổi đối tượng Date sang chuỗi ngày theo định dạng mong muốn
+        String ngayOutput = sdfOutput.format(ngay);
+      return ngayOutput;
     }
 
     public ArrayList<SinhVien> getListSV() {
@@ -44,12 +58,15 @@ public class TrucNhat {
     public String getLuuY() {
         return luuY;
     }
+     public int getBuoi() {
+        return Buoi;
+    }
 
     public TrucNhat() {
     }
 
-    public TrucNhat(Lop lopTN, Date ngayTN, String luuY, ArrayList<SinhVien> listSV) {
-        this.lopTN = lopTN;
+    public TrucNhat(int buoi, Date ngayTN,ArrayList<SinhVien> listSV, String luuY ) {
+        this.Buoi=buoi;
         this.ngayTN = ngayTN;
         this.luuY = luuY;
         this.listSV= listSV;
