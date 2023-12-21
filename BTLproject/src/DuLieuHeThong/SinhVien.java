@@ -12,6 +12,13 @@ public class SinhVien {
     private String maSV;
     private String hoTen;
     private ArrayList<String> listMaLop ;
+
+    public SinhVien(String maSinhVien, String hoTen) {
+        this.maSV = maSinhVien;
+        this.hoTen = hoTen;
+    }
+
+   
     public void setMaSV(String maSV) {
         this.maSV = maSV;
     }
@@ -45,10 +52,6 @@ public class SinhVien {
         this.listMaLop = listMaLop;
     }
 
-    public SinhVien(String maSV, String hoTen) {
-        this.maSV = maSV;
-        this.hoTen = hoTen;
-    }
     public void addMaLop(String maLop) {
         listMaLop.add(maLop);
     }
@@ -73,5 +76,7 @@ public class SinhVien {
         final SinhVien other = (SinhVien) obj;
         return Objects.equals(this.maSV, other.maSV);
     }
+
+ 
 
 }

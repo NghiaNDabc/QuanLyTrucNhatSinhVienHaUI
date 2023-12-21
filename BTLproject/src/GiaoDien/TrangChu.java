@@ -6,6 +6,7 @@ package GiaoDien;
 import javax.swing.table.DefaultTableModel;
 import DuLieuHeThong.Lop;
 import DuLieuHeThong.SinhVien;
+import Source.ChiTiet.DataSingleton;
 import Source.ChiTiet.TableTrangChu;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -44,6 +45,9 @@ import static org.apache.poi.ss.usermodel.CellType.STRING;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
 /**
  *
@@ -56,11 +60,18 @@ public class TrangChu extends javax.swing.JFrame {
      */
     public TrangChu() {
         initComponents();
+        if(listLop.isEmpty()){
         fakeData();
+        }
+        loadTableTrangChu();
         myInit();
+        clickdetail();
     }
+    
     ArrayList<SinhVien> listTatCaSinhVien = new ArrayList<>();
-    ArrayList<Lop> listLop = new ArrayList<>();
+    
+    DataSingleton dataSingleton = DataSingleton.getInstance();
+     ArrayList<Lop> listLop = dataSingleton.getDanhSachLop();
 //    public TrangChu(JLabel LaBel_QLTN, JButton btnChonFile, JButton btnDangXuat, JButton btnSapXep, JButton btnSua, JButton btnThem, JButton btnTimKiem, JButton btnTrangChu, JButton btnXoa, JLabel jLabel1, JLabel jLabel2, JLabel jLabel3, JLabel jLabel4, JLabel jLabel5, JLabel jLabel6, JLabel jLabel7, JLabel jLabel8, JPanel jPanel1, JPanel jPanel3, JPanel jPanel4, JPanel jPanel7, JScrollPane jScrollPane1, JTable tblLopTrucNhat, JTextField txtChonFile, JTextField txtMaLop, JTextField txtMaLop1, JTextField txtMaLop2, JTextField txtMaLop3, JTextField txtMaLop4, JTextField txtMaLop5) throws HeadlessException {
 //        this.LaBel_QLTN = LaBel_QLTN;
 //        this.btnChonFile = btnChonFile;
@@ -616,10 +627,14 @@ public class TrangChu extends javax.swing.JFrame {
                 if (row != null) {
                     // Đọc thông tin từ cột 0 và cột 1
                     Cell cellMaSV = row.getCell(0);
+                   
                     Cell cellHoTen = row.getCell(1);
 
                     // Kiểm tra kiểu dữ liệu trước khi đọc giá trị
-                    String maSV = getCellValueAsString(cellMaSV);
+                    String maSV;
+                    //dinh dạng lại mã sinh viên do quá lớn 
+                      DecimalFormat decimalFormat = new DecimalFormat("#");
+                    maSV = decimalFormat.format(cellMaSV.getNumericCellValue());
                     System.out.println(maSV);
                     String hoTen = getCellValueAsString(cellHoTen);
                     System.out.println(hoTen);
@@ -647,6 +662,7 @@ public class TrangChu extends javax.swing.JFrame {
     }
 
     void fakeData() {
+        
         readExcelFile("data_test\\fake_dslop.xlsx", 0, "IT001");
         ArrayList<SinhVien> listSvCuaLop1 = new ArrayList<>();
         for (SinhVien sv : listTatCaSinhVien) {
@@ -688,7 +704,7 @@ public class TrangChu extends javax.swing.JFrame {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        loadTableTrangChu();
+        
     }
 
     private void updateTextFields(int selectedRow) {
@@ -1017,7 +1033,27 @@ void xoaSVTheoMa(String maLop){
             }
         });
     }
+    public void clickdetail(){
+            tblLopTrucNhat.addMouseListener(new MouseAdapter() {
+           
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedRow = tblLopTrucNhat.getSelectedRow();
+                    String classID = (String) tblLopTrucNhat.getValueAt(selectedRow, 0);
 
+                   
+                    showClassDetail(classID,selectedRow); // mở trang detail
+                    dispose();//dong trang cũ
+                }
+            }
+        });
+    }
+    public void showClassDetail(String classID,int selectedRow) {
+        // Gọi lại interface để chuyển sang JFrame chi tiết
+        ChiTietQLTN detailFrame = new ChiTietQLTN(classID,selectedRow, this);
+        detailFrame.setVisible(true);
+    }
     /**
      * @param args the command line arguments
      */
